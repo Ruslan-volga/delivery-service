@@ -1,0 +1,24 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - HTTP_HOST=0.0.0.0
+      - HTTP_PORT=3000
+      - MONGO_URL=mongodb://mongo:27017/delivery_service
+      - SESSION_SECRET=delivery-service-secret-key
+    depends_on:
+      - mongo
+    volumes:
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:4.4.29
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
